@@ -1,0 +1,42 @@
+# Configuración de Cron Jobs para Dropshipping
+# Agregar estas líneas al crontab del servidor
+
+# Sincronización diaria completa a las 2:00 AM
+0 2 * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php sync all >> /var/log/dropshipping_sync.log 2>&1
+
+# Actualización de estados de pedidos cada 4 horas
+0 */4 * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php orders status >> /var/log/dropshipping_orders.log 2>&1
+
+# Envío de notificaciones de seguimiento cada 2 horas
+0 */2 * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php orders tracking >> /var/log/dropshipping_tracking.log 2>&1
+
+# Detección de pedidos retrasados una vez al día a las 10:00 AM
+0 10 * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php orders delays >> /var/log/dropshipping_delays.log 2>&1
+
+# Limpieza de logs y contadores diarios a las 1:00 AM
+0 1 * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php cleanup all >> /var/log/dropshipping_cleanup.log 2>&1
+
+# Reseteo de contadores de API a medianoche
+0 0 * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php cleanup counters >> /var/log/dropshipping_counters.log 2>&1
+
+# Sincronización rápida de precios cada hora (solo para proveedores críticos)
+0 * * * * /usr/bin/php /ruta/al/proyecto/scripts/sync_dropshipping.php sync provider 1 >> /var/log/dropshipping_hourly.log 2>&1
+
+# Ejemplo de configuración para Windows con XAMPP:
+# Usar el Programador de Tareas de Windows con estos comandos:
+# C:\xampp\php\php.exe C:\xampp\htdocs\tienda_web_phalcon\scripts\sync_dropshipping.php sync all
+
+# Instrucciones de instalación:
+# 1. Editar el crontab: crontab -e
+# 2. Agregar las líneas deseadas
+# 3. Cambiar "/ruta/al/proyecto" por la ruta real del proyecto
+# 4. Asegurar que los directorios de logs existan y tengan permisos de escritura
+# 5. Verificar que PHP esté en el PATH o usar la ruta completa
+
+# Para verificar que los cron jobs están configurados:
+# crontab -l
+
+# Para ver los logs de cron:
+# tail -f /var/log/cron
+# tail -f /var/log/dropshipping_sync.log
+

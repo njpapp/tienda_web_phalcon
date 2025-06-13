@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Redirigir todo el tráfico al directorio public
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ public/$1 [QSA,L]
+
